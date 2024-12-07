@@ -1,10 +1,12 @@
-import './App.css';
+import { Box } from '@mui/material';
+import EmployeeList from './component/employee-list';
+import { styles } from './styles';
 
 function App() {
   return (
-    <div className="App">
-      employee list prject initialization
-    </div>
+    <Box sx={styles.app}>
+      <EmployeeList />
+    </Box>
   );
 }
 
