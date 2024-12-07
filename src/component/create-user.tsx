@@ -3,12 +3,13 @@ import { addEmployee } from "../store/builder/employee.builder";
 import { useDispatch } from "react-redux";
 import { AppDispatch } from "../store/store";
 import { ChangeEvent, useState } from "react";
+import { AddUser } from "../types";
 const CreateUser = () => {
   const dispatch = useDispatch<AppDispatch>();
   
   const [newUserFields, setNewUserFields] = useState<boolean>(false);
   
-  const [newUser, setNewUser] = useState({
+  const [newUser, setNewUser] = useState<AddUser>({
     name: "",
     position: "",
     department: "",

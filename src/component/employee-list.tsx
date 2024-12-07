@@ -1,6 +1,14 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 
+import { DataGrid, GridActionsCellItem, GridColDef } from "@mui/x-data-grid";
+import { Box, Typography } from "@mui/material";
+import ModeEditIcon from "@mui/icons-material/ModeEdit";
+import SaveIcon from "@mui/icons-material/Save";
+import DeleteForeverIcon from "@mui/icons-material/DeleteForever";
+
+import CreateUser from "./create-user";
+
 import {
   fetchEmployees,
   deleteEmployee,
@@ -8,16 +16,11 @@ import {
 } from "../store/builder/employee.builder";
 
 import type { AppDispatch } from "../store/store";
-import type { Employee } from "../types";
-import { Box, Typography } from "@mui/material";
-import { DataGrid, GridActionsCellItem, GridColDef } from "@mui/x-data-grid";
-import ModeEditIcon from "@mui/icons-material/ModeEdit";
-import DeleteForeverIcon from "@mui/icons-material/DeleteForever";
-import SaveIcon from "@mui/icons-material/Save";
-import CreateUser from "./create-user";
-type EditRow = { id: string; updatedData: Record<string, any> };
+import type { EditRow, Employee } from "../types";
+
 const EmployeeList: React.FC = () => {
   const dispatch = useDispatch<AppDispatch>();
+
   const { employees, loading, error } = useSelector(
     (state: any) => state.employees
   );
@@ -41,7 +44,6 @@ const EmployeeList: React.FC = () => {
   };
 
   const columns: GridColDef[] = [
-    { field: "srNo", headerName: "Sr No", width: 70 },
     {
       field: "name",
       headerName: "Name",
@@ -55,14 +57,21 @@ const EmployeeList: React.FC = () => {
         return <Typography>{params.value}</Typography>;
       },
     },
-    { field: "position", headerName: "Position", width: 130 ,renderCell: (params) => {
-      if (editRow.id === params.id) {
-        return (
-          <input onChange={(e) => handleUpdateRow("position", e.target.value)} />
-        );
-      }
-      return <Typography>{params.value}</Typography>;
-    },},
+    {
+      field: "position",
+      headerName: "Position",
+      width: 130,
+      renderCell: (params) => {
+        if (editRow.id === params.id) {
+          return (
+            <input
+              onChange={(e) => handleUpdateRow("position", e.target.value)}
+            />
+          );
+        }
+        return <Typography>{params.value}</Typography>;
+      },
+    },
     {
       field: "department",
       headerName: "department",
@@ -71,7 +80,9 @@ const EmployeeList: React.FC = () => {
       renderCell: (params) => {
         if (editRow.id === params.id) {
           return (
-            <input onChange={(e) => handleUpdateRow("department", e.target.value)} />
+            <input
+              onChange={(e) => handleUpdateRow("department", e.target.value)}
+            />
           );
         }
         return <Typography>{params.value}</Typography>;
@@ -87,7 +98,6 @@ const EmployeeList: React.FC = () => {
           icon={editRow.id === params.id ? <SaveIcon /> : <ModeEditIcon />}
           label="Edit"
           onClick={() => {
-
             if (editRow.id) {
               const updatedEmployee = {
                 id: editRow.id,
@@ -100,7 +110,6 @@ const EmployeeList: React.FC = () => {
                 id: "",
                 updatedData: {},
               });
-
             } else {
               setEditRow(() => ({
                 id: params.id.toString(),
@@ -138,7 +147,7 @@ const EmployeeList: React.FC = () => {
         }}
       >
         <Typography variant="h6">User List</Typography>
-        <CreateUser/>
+        <CreateUser />
       </Box>
       <Box sx={{ height: 400, width: "100%", marginTop: "50px" }}>
         <DataGrid rows={employees} columns={columns} />
